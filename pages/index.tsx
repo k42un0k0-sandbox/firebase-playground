@@ -1,7 +1,15 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { db } from '../lib/firebase'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const [value, setValue]=useState<string>("")
+  useEffect(()=>{
+    db.ref("hello").get().then((v)=>{
+      setValue((v.toJSON() as {value:string}).value)
+    })
+  },[])
   return (
     <div className={styles.container}>
       <Head>
@@ -12,7 +20,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">Next.js!{value}</a>
         </h1>
 
         <p className={styles.description}>
